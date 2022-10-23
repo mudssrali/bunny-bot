@@ -9,7 +9,7 @@ defmodule CryptoBunny.Message.Handler do
 
   @doc false
   @spec handle_message(message :: any(), event :: map()) :: :ok | :error
-  def handle_message(%{ "text" => "hi"}, event) do
+  def handle_message(%{"text" => "hi"}, event) do
     {:ok, profile} = Message.get_sender_profile(event)
 
     {:ok, first_name} = Map.fetch(profile, "first_name")
@@ -24,13 +24,13 @@ defmodule CryptoBunny.Message.Handler do
 
   def handle_message(_message, event) do
     greetings = Message.greeting()
-    message =
-    """
+
+    message = """
     #{greetings}
     Sorry, got unknown message :(
     """
+
     body = Templates.text(event, message)
     Bot.send_message(body)
   end
-
 end

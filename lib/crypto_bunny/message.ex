@@ -27,7 +27,6 @@ defmodule CryptoBunny.Message do
 
     case Tesla.get(profile_url) do
       {:ok, resp} ->
-
         {:ok, Jason.decode!(resp.body)}
 
       {:error, reason} ->
