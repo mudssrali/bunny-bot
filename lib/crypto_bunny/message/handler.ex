@@ -7,8 +7,14 @@ defmodule CryptoBunny.Message.Handler do
   alias CryptoBunny.Message
   alias CryptoBunny.Message.Templates
 
-  @doc false
-  @spec handle_message(message :: any(), event :: map()) :: :ok | :error
+  require Logger
+
+  @type event :: map()
+
+  @doc """
+  Handles message event
+  """
+  @spec handle_message(message :: map(), event :: event()) :: :ok | :error
   def handle_message(%{"text" => "hi"}, event) do
     {:ok, profile} = Message.get_sender_profile(event)
 
@@ -20,6 +26,13 @@ defmodule CryptoBunny.Message.Handler do
     IO.inspect(resp_body)
 
     Bot.send_message(resp_body)
+
+    # We send button template to choose coin search method as
+    #
+    # You want to search coins by?
+    # Coins ID
+    # Coins name
+    request_coins_search_method(event)
   end
 
   def handle_message(_message, event) do
@@ -32,5 +45,21 @@ defmodule CryptoBunny.Message.Handler do
 
     body = Templates.text(event, message)
     Bot.send_message(body)
+  end
+
+  defp request_coins_search_method(event) do
+    # the buttons strucuture looks as follow
+    # {button_type, button_title, payload} = {:postback, "Green", "color_green"}
+
+    buttons = [
+      {:postback, "Coins ID", "coins_search_by_id"},
+      {:postback, "Coins name", "coins_search_by_name"}
+    ]
+
+    template_title = "You would like to search coins by?"
+    coin_search_method_template = Templates.buttons(event, template_title, buttons)
+
+    # Send postback message
+    Bot.send_message(coin_search_method_template)
   end
 end
