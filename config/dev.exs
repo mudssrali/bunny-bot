@@ -1,9 +1,9 @@
 import Config
 
-# Facebook's bot configuration
+# Facebook messenger's bot configuration
 
 config :crypto_bunny,
-  fb_chat_bot: %{
+  fb_bot: %{
     api_version: "v15.0",
     message_url: "me/messages",
     base_url: "https://graph.facebook.com",
