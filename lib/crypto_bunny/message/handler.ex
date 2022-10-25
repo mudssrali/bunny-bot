@@ -47,6 +47,18 @@ defmodule CryptoBunny.Message.Handler do
     Bot.send_message(body)
   end
 
+  @doc """
+  Handles postback event
+  """
+  @spec handle_postback(postback :: map(), event :: event()) :: :ok | :error
+  def handle_postback(%{"payload" => "coins_search_by_" <> selected_coins_search_method}, event) do
+    Logger.info("selected coins search method: #{selected_coins_search_method}")
+
+    event
+    |> Templates.text("Thank you, for your selection, please wait!")
+    |> Bot.send_message()
+  end
+
   defp request_coins_search_method(event) do
     # the buttons strucuture looks as follow
     # {button_type, button_title, payload} = {:postback, "Green", "color_green"}
