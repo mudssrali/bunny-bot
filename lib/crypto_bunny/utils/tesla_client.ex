@@ -7,12 +7,18 @@ defmodule CryptoBunny.Utils.TeslaClient do
   @doc """
   returns a tesla client for specified configuration
   """
-  @spec client(:coin_gecko | nil, timeout :: non_neg_integer()) :: Tesla.Client.t()
+  @spec client(:coin_gecko | :fb | nil, timeout :: non_neg_integer()) :: Tesla.Client.t()
   def client(type, timeout \\ @recv_timeout)
 
   def client(type, timeout) when type == :coin_gecko do
     coin_gecko = Application.get_env(:crypto_bunny, :coin_gecko)
     base_url = coin_gecko.base_url <> "/" <> coin_gecko.api_version
+    new(base_url, timeout)
+  end
+
+  def client(type, timeout) when type == :fb do
+    fb = Application.get_env(:crypto_bunny, :fb_bot)
+    base_url = fb.base_url <> "/" <> fb.api_version
     new(base_url, timeout)
   end
 
