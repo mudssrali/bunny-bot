@@ -12,6 +12,9 @@ defmodule CryptoBunny do
       %{"message" => message} ->
         Message.Handler.handle_message(message, event)
 
+      %{"postback" => postback} ->
+        Message.Handler.handle_postback(postback, event)
+
       _ ->
         error_body = Message.Templates.text(event, "Something went wrong. Try again!")
         Bot.send_message(error_body)
