@@ -3,6 +3,8 @@ defmodule CryptoBunny.Message do
   The Message module
   """
 
+  alias CryptoBunny.Utils.TeslaClient
+
   @type event :: map()
 
   @doc """
@@ -10,24 +12,13 @@ defmodule CryptoBunny.Message do
   """
   @spec get_sender_profile(event :: event()) :: {:ok, any()} | {:profile_not_found, any()}
   def get_sender_profile(event) do
+    fb = Application.get_env(:crypto_bunny, :fb_bot)
     sender = get_sender(event)
-    bot_config = Application.get_env(:crypto_bunny, :fb_chat_bot)
+    client = TeslaClient.client(:fb)
 
-    page_token = bot_config.page_access_token
-    token_path = "?access_token=#{page_token}"
-
-    profile_url =
-      [
-        bot_config.base_url,
-        bot_config.api_version,
-        sender["id"],
-        token_path
-      ]
-      |> Enum.join("/")
-
-    case Tesla.get(profile_url) do
-      {:ok, resp} ->
-        {:ok, Jason.decode!(resp.body)}
+    case Tesla.get(client, sender["id"], query: [access_token: fb.page_access_token]) do
+      {:ok, response} ->
+        {:ok, response.body}
 
       {:error, reason} ->
         {:profile_not_found, reason}
