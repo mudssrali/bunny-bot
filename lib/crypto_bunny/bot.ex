@@ -53,6 +53,6 @@ defmodule CryptoBunny.Bot do
       bot_config.message_url,
       token_path
     ]
-    |> Path.join()
+    |> Enum.join("/")
   end
 end

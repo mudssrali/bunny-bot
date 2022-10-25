@@ -23,8 +23,6 @@ defmodule CryptoBunny.Message.Handler do
     message = "Welcome to Crypto Bunny, #{first_name}"
     resp_body = Templates.text(event, message)
 
-    IO.inspect(resp_body)
-
     Bot.send_message(resp_body)
 
     # We send button template to choose coin search method as

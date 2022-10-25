@@ -23,7 +23,7 @@ defmodule CryptoBunny.Message do
         sender["id"],
         token_path
       ]
-      |> Path.join()
+      |> Enum.join("/")
 
     case Tesla.get(profile_url) do
       {:ok, resp} ->
