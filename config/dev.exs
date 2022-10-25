@@ -11,6 +11,13 @@ config :crypto_bunny,
     webhook_verify_token: System.get_env("FB_WEBHOOK_VERIFY_TOKEN")
   }
 
+# Coin Geck API configuration
+config :crypto_bunny,
+  coin_gecko: %{
+    api_version: "v3",
+    base_url: "https://api.coingecko.com/api"
+  }
+
 # For development, we disable any cache and enable
 # debugging and code reloading.
 #
