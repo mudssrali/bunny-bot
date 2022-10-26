@@ -1,5 +1,21 @@
 import Config
 
+config :crypto_bunny,
+  fb_bot: %{
+    api_version: "v15.0",
+    message_url: "me/messages",
+    base_url: "https://graph.facebook.com",
+    page_access_token: System.get_env("FB_PAGE_ACCESS_TOKEN"),
+    webhook_verify_token: System.get_env("FB_WEBHOOK_VERIFY_TOKEN")
+  }
+
+# Coin Geck API configuration
+config :crypto_bunny,
+  coin_gecko: %{
+    api_version: "v3",
+    base_url: "https://api.coingecko.com/api"
+  }
+
 # For production, don't forget to configure the url host
 # to something meaningful, Phoenix uses this information
 # when generating URLs.

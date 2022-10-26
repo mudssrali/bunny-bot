@@ -61,6 +61,7 @@ defmodule CryptoBunny.CoinGecko do
           interval :: String.t()
         ) :: {:ok, map()} | {:error, any()}
   def get_market_chart(id, currency \\ @currency, days \\ @days_ago, interval \\ @data_interval)
+
   def get_market_chart(id, currency, days, interval) when is_binary(id) do
     client = TeslaClient.client(:coin_gecko)
 
@@ -81,6 +82,6 @@ defmodule CryptoBunny.CoinGecko do
         error
     end
   end
-  def get_market_chart(_,_,_,_), do: {:error, "invalid coin id."}
 
+  def get_market_chart(_, _, _, _), do: {:error, "invalid coin id."}
 end
