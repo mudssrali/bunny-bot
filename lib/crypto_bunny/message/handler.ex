@@ -11,6 +11,7 @@ defmodule CryptoBunny.Message.Handler do
 
   require Logger
 
+  @max_coins 5
   @type event :: map()
 
   @doc """
@@ -54,6 +55,60 @@ defmodule CryptoBunny.Message.Handler do
           end
 
         send_message(event, message)
+
+      {:error, _reason} ->
+        send_message(event, "Something went wrong, Try again!")
+    end
+  end
+
+  # Handles message for coins search by name
+  # In response to this message, we will send
+  # postback message of max 5 coins to the recipient
+  # to check price for the selected coin
+  def handle_message(%{"text" => "CN_" <> query_text}, event) do
+    Task.start(fn ->
+      message = "Give us a moment, searching coins with '#{query_text}'"
+      send_message(event, message)
+    end)
+
+    Logger.debug("searching coins with #{query_text}")
+
+    case CoinGecko.search(query_text) do
+      {:ok, data} ->
+        coins = Map.get(data, "coins", [])
+        max_coins = Enum.take(coins, @max_coins)
+
+        # facebook messenger doesn't alow have more than 2 buttons
+        # per message. To achieve let recipient to select one of coin,
+        #
+        # Following optoins:
+        #
+        # a. divide the buttons into multiple messages
+        # b. use quick replies postbacks
+        # c. send as text and let user respond with 1 to 5
+
+        # To make it user friendly, let's split coins buttons into
+        # multiple messages and send to recipient
+
+        # Send title message
+        send_message(event, "Select coin from below to see historical prices data from 1 to 5")
+
+        # Send buttons in loop
+        Enum.each(max_coins, fn coin ->
+          title = """
+          Market Capital Rank: #{coin["market_cap_rank"]}
+          Symbol: #{coin["symbol"]}
+          """
+
+          coin_name = coin["name"]
+          payload = "ID_" <> coin["id"]
+
+          button = {:postback, coin_name, payload}
+
+          event
+          |> Templates.buttons(title, [button])
+          |> Bot.send_message()
+        end)
 
       {:error, _reason} ->
         send_message(event, "Something went wrong, Try again!")
