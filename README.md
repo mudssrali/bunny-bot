@@ -15,13 +15,13 @@ To run `bunny bot` inside docker on local machine, run the following commands
 
 Build the docker image 
 
-```bash
+```shell
 docker build -t bunny-bot:version-init .
 ```
 
 Run the application inside docker container
 
-```bash
+```shell
 docker run -d -e FB_PAGE_ACCESS_TOKEN=[put_fb_page_token_here] \
 -e FB_WEBHOOK_VERIFY_TOKEN=[put_fb_webhook_verify_token_here] \
 -p 4000:4000 \
@@ -30,7 +30,7 @@ docker run -d -e FB_PAGE_ACCESS_TOKEN=[put_fb_page_token_here] \
 
 OR
 
-Run the bash-script to run bunny bot inside docker container
+Run the shell-script to run bunny bot inside docker container
 
 > ./deploy-docker.sh
 
