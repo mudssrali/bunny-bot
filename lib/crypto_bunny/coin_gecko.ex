@@ -28,7 +28,7 @@ defmodule CryptoBunny.CoinGecko do
     end
   end
 
-  def search(_), do: []
+  def search(_), do: {:error, "invalid search text."}
 
   @doc """
   Get current data (name, price, market, ... including exchange tickers) for a coin
@@ -49,7 +49,7 @@ defmodule CryptoBunny.CoinGecko do
     end
   end
 
-  def get_by_id(_), do: nil
+  def get_by_id(_), do: {:error, "invalid coin id."}
 
   @doc """
   Get historical market data include price, market cap, and 24h volume (granularity auto) for a coin
@@ -60,7 +60,8 @@ defmodule CryptoBunny.CoinGecko do
           days :: non_neg_integer(),
           interval :: String.t()
         ) :: {:ok, map()} | {:error, any()}
-  def get_market_chart(id, currency \\ @currency, days \\ @days_ago, interval \\ @data_interval) do
+  def get_market_chart(id, currency \\ @currency, days \\ @days_ago, interval \\ @data_interval)
+  def get_market_chart(id, currency, days, interval) when is_binary(id) do
     client = TeslaClient.client(:coin_gecko)
 
     path = "/coins/#{id}/market_chart"
@@ -80,4 +81,6 @@ defmodule CryptoBunny.CoinGecko do
         error
     end
   end
+  def get_market_chart(_,_,_,_), do: {:error, "invalid coin id."}
+
 end
