@@ -21,6 +21,34 @@ if System.get_env("PHX_SERVER") do
 end
 
 if config_env() == :prod do
+  fb_page_access_token =
+    System.get_env("FB_PAGE_ACCESS_TOKEN") ||
+      raise """
+      environment variable FB_PAGE_ACCESS_TOKEN is missing.
+      """
+
+  webhook_verify_token =
+    System.get_env("FB_WEBHOOK_VERIFY_TOKEN") ||
+      raise """
+      environment variable FB_WEBHOOK_VERIFY_TOKEN is missing.
+      """
+
+  config :crypto_bunny,
+    fb_bot: %{
+      api_version: "v15.0",
+      message_url: "me/messages",
+      base_url: "https://graph.facebook.com",
+      page_access_token: fb_page_access_token,
+      webhook_verify_token: webhook_verify_token
+    }
+
+  # Coin Geck API configuration
+  config :crypto_bunny,
+    coin_gecko: %{
+      api_version: "v3",
+      base_url: "https://api.coingecko.com/api"
+    }
+
   # The secret key base is used to sign/encrypt cookies and other secrets.
   # A default value is used in config/dev.exs and config/test.exs but you
   # want to use a different value for prod and you most likely don't want

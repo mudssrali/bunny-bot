@@ -8,7 +8,7 @@ config :crypto_bunny,
     message_url: "me/messages",
     base_url: "https://graph.facebook.com",
     page_access_token: System.get_env("FB_PAGE_ACCESS_TOKEN"),
-    webhook_verify_token: System.get_env("FB_WEBHOOK_VERIFY_TOKEN")
+    webhook_verify_token: System.get_env("FB_WEBHOOK_VERIFY_TOKEN") || "fb-elixir-bot"
   }
 
 # Coin Geck API configuration
