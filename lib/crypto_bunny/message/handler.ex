@@ -146,6 +146,33 @@ defmodule CryptoBunny.Message.Handler do
     send_message(event, message)
   end
 
+  # Handles postback message for coin historical data
+  def handle_postback(%{"payload" => "ID_" <> coin_id, "title" => title}, event) do
+    Task.start(fn ->
+      message = "Give us a moment, fetching historical price data for #{title} coin"
+      send_message(event, message)
+    end)
+
+    case CoinGecko.get_market_chart(coin_id) do
+      {:ok, historical_data} ->
+        prices = Map.get(historical_data, "prices", [])
+        prices_string = get_prices_string(prices)
+
+        message =
+          if prices == [] do
+            "Historical price data not found for '#{title}', Try again."
+          else
+            "Historical price data for '#{title}' for past 14 days. \n\n" <>
+              prices_string
+          end
+
+        send_message(event, message)
+
+      {:error, _reason} ->
+        send_message(event, "Something went wrong, Try again!")
+    end
+  end
+
   defp request_coins_search_method(event) do
     # the buttons strucuture looks as follow
     # {button_type, button_title, payload} = {:postback, "Green", "color_green"}
