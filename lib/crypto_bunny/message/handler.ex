@@ -19,13 +19,11 @@ defmodule CryptoBunny.Message.Handler do
   @spec handle_message(message :: map(), event :: event()) :: :ok | :error
   def handle_message(%{"text" => "hi"}, event) do
     {:ok, profile} = Message.get_sender_profile(event)
-
     {:ok, first_name} = Map.fetch(profile, "first_name")
 
     message = "Welcome to Crypto Bunny, #{first_name}"
-    resp_body = Templates.text(event, message)
 
-    Bot.send_message(resp_body)
+    send_message(event, message)
 
     # We send button template to choose coin search method as
     #
@@ -39,10 +37,7 @@ defmodule CryptoBunny.Message.Handler do
   def handle_message(%{"text" => "ID_" <> coin_id}, event) do
     Task.start(fn ->
       message = "Give us a moment, fetching historical price data for #{coin_id} coin"
-
-      event
-      |> Templates.text(message)
-      |> Bot.send_message()
+      send_message(event, message)
     end)
 
     case CoinGecko.get_market_chart(coin_id) do
@@ -58,13 +53,10 @@ defmodule CryptoBunny.Message.Handler do
               prices_string
           end
 
-        event
-        |> Templates.text(message)
-        |> Bot.send_message()
+        send_message(event, message)
 
       {:error, _reason} ->
-        body = Templates.text(event, "Something went wrong, Try again!")
-        Bot.send_message(body)
+        send_message(event, "Something went wrong, Try again!")
     end
   end
 
@@ -76,8 +68,7 @@ defmodule CryptoBunny.Message.Handler do
     Sorry, got unknown message :(
     """
 
-    body = Templates.text(event, message)
-    Bot.send_message(body)
+    send_message(event, message)
   end
 
   @doc """
@@ -85,9 +76,7 @@ defmodule CryptoBunny.Message.Handler do
   """
   @spec handle_postback(postback :: map(), event :: event()) :: :ok | :error
   def handle_postback(%{"payload" => "coins_search_by_" <> selected_method}, event) do
-    Logger.info("selected coins search method: #{selected_method}")
-
-    search_method =
+    ssearch_guide =
       case selected_method do
         "id" ->
           "Please write Coin ID in format: ID_[coin_id] " <>
@@ -97,9 +86,9 @@ defmodule CryptoBunny.Message.Handler do
           "Please write Coins Name search in format: CN_[name] e.g. CN_bitcoin"
       end
 
-    event
-    |> Templates.text("Thank you, for your selection!\n" <> search_method)
-    |> Bot.send_message()
+    message = "Thank you, for your selection!\n" <> ssearch_guide
+
+    send_message(event, message)
   end
 
   defp request_coins_search_method(event) do
@@ -126,5 +115,11 @@ defmodule CryptoBunny.Message.Handler do
       "#{date}: $#{rate}"
     end)
     |> Enum.join("\n")
+  end
+
+  defp send_message(event, message) do
+    event
+    |> Templates.text(message)
+    |> Bot.send_message()
   end
 end
