@@ -138,7 +138,7 @@ defmodule CryptoBunny.Message.Handler do
             "e.g. ID_bitcoin to get market historical data"
 
         "name" ->
-          "Please write Coins Name search in format: CN_[name] e.g. CN_bitcoin"
+          "Please write Coins name to search in format: CN_[name] e.g. CN_bitcoin"
       end
 
     message = "Thank you, for your selection!\n" <> ssearch_guide
@@ -178,11 +178,11 @@ defmodule CryptoBunny.Message.Handler do
     # {button_type, button_title, payload} = {:postback, "Green", "color_green"}
 
     buttons = [
-      {:postback, "Coins ID", "coins_search_by_id"},
+      {:postback, "Coin ID", "coins_search_by_id"},
       {:postback, "Coins name", "coins_search_by_name"}
     ]
 
-    template_title = "You would like to search coins by?"
+    template_title = "Would you like to search coins by?"
     coin_search_method_template = Templates.buttons(event, template_title, buttons)
 
     # Send postback message
