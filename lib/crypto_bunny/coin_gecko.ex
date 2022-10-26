@@ -13,7 +13,7 @@ defmodule CryptoBunny.CoinGecko do
   @doc """
   Searches for coins, categories and markets listed on CoinGecko ordered by largest Market Cap first
   """
-  @spec search(query :: String.t()) :: {:ok, [map()]} | {:error, any()}
+  @spec search(query :: String.t()) :: {:ok, map()} | {:error, any()}
   def search(query) when is_binary(query) do
     client = TeslaClient.client(:coin_gecko)
 
