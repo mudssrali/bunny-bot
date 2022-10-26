@@ -44,6 +44,21 @@ Run following commands to run `tests` using `mix test` utility
 
 > mix test test/crypto_bunny_web/controllers
 
+### Webhook URL
+To make sure Facebook messenger communicate with bunny bot either running locally or on production, set the following 
+webhook url with the webhook verify token same as in app configuration.
+
+```txt
+http://localhost:4000/api/facebook-webhook
+```
+
+If the application is running on local machine, we cannot use localhost address directly. To expose localhost on internet,
+we can take advantage of port-tunneling] using [Ngrok](https://ngrok.com/). Now webhook url would look like
+
+```txt
+https://65db-119-160-99-97.ngrok.io/api/facebook-webhook
+```
+
 ### Related Links
 * [You don’t need chatbot creation tools — Let’s build a Messenger bot from scratch](https://www.freecodecamp.org/news/you-dont-needs-chatbot-creation-tools-let-s-build-a-messenger-bot-from-scratch-8fcbb40f073b/)
 * [Postback Button Reference](https://developers.facebook.com/docs/messenger-platform/reference/buttons/postback)
