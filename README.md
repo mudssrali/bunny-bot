@@ -59,6 +59,12 @@ we can take advantage of port-tunneling] using [Ngrok](https://ngrok.com/). Now 
 https://65db-119-160-99-97.ngrok.io/api/facebook-webhook
 ```
 
+### Demo
+See the bot in action below
+
+https://user-images.githubusercontent.com/24487349/198945459-c36a45c7-ff8b-4acd-af6d-e8536db397e6.mp4
+
+
 ### Related Links
 * [You don’t need chatbot creation tools — Let’s build a Messenger bot from scratch](https://www.freecodecamp.org/news/you-dont-needs-chatbot-creation-tools-let-s-build-a-messenger-bot-from-scratch-8fcbb40f073b/)
 * [Postback Button Reference](https://developers.facebook.com/docs/messenger-platform/reference/buttons/postback)
