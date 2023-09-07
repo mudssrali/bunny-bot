@@ -1,9 +1,9 @@
-defmodule CryptoBunny.Message.Templates do
+defmodule CryptoBunny.Messenger.MessageTemplates do
   @moduledoc """
-  The Message Templates module
+  The Message Templates module -- Provides message templates
   """
 
-  alias CryptoBunny.Message
+  alias CryptoBunny.Messenger
 
   @type event :: map()
 
@@ -14,7 +14,7 @@ defmodule CryptoBunny.Message.Templates do
   def text(event, text) do
     %{
       "recipient" => %{
-        "id" => Message.get_sender(event)["id"]
+        "id" => Messenger.get_sender(event)["id"]
       },
       "message" => %{
         "text" => text
@@ -24,11 +24,11 @@ defmodule CryptoBunny.Message.Templates do
 
   @doc """
   Returns postback buttons template
+
+  To read more about postback buttons, visit https://developers.facebook.com/docs/messenger-platform/reference/buttons/postback
   """
   @spec buttons(event :: event(), template_title :: String.t(), buttons :: list()) :: map()
   def buttons(event, template_title, buttons) do
-    # Read more about postback buttons on
-    # https://developers.facebook.com/docs/messenger-platform/reference/buttons/postback
 
     buttons = Enum.map(buttons, &prepare_button/1)
 
@@ -60,7 +60,7 @@ defmodule CryptoBunny.Message.Templates do
   end
 
   defp recipient(event) do
-    %{"id" => Message.get_sender(event)["id"]}
+    %{"id" => Messenger.get_sender(event)["id"]}
   end
 
   defp attachment(type, payload) do

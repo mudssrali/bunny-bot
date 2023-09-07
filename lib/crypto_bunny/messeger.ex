@@ -1,6 +1,6 @@
-defmodule CryptoBunny.Message do
+defmodule CryptoBunny.Messenger do
   @moduledoc """
-  The Message module
+  The Messenger module
   """
 
   alias CryptoBunny.Utils.TeslaClient

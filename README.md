@@ -1,6 +1,6 @@
 # Bunny Bot
 
-Facebook messenger chat bot to evaluate crypto currencies
+Facebook messenger chatbot to evaluate crypto currencies
 
 To start your Phoenix server:
 
@@ -53,7 +53,7 @@ http://localhost:4000/api/facebook-webhook
 ```
 
 If the application is running on local machine, we cannot use localhost address directly. To expose localhost on internet,
-we can take advantage of port-tunneling] using [Ngrok](https://ngrok.com/). Now webhook url would look like
+we can take advantage of port-tunneling using [Ngrok](https://ngrok.com/). Now webhook url would look like
 
 ```txt
 https://65db-119-160-99-97.ngrok.io/api/facebook-webhook

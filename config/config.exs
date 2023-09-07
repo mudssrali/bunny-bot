@@ -10,9 +10,7 @@ import Config
 # Configures the endpoint
 config :crypto_bunny, CryptoBunnyWeb.Endpoint,
   url: [host: "localhost"],
-  render_errors: [view: CryptoBunnyWeb.ErrorView, accepts: ~w(json), layout: false],
-  pubsub_server: CryptoBunny.PubSub,
-  live_view: [signing_salt: "buuqA+Da"]
+  render_errors: [view: CryptoBunnyWeb.ErrorView, accepts: ~w(json), layout: false]
 
 # Configures Elixir's Logger
 config :logger, :console,

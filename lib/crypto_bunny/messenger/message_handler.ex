@@ -1,11 +1,10 @@
-defmodule CryptoBunny.Message.Handler do
+defmodule CryptoBunny.Messenger.MessageHandler do
   @moduledoc """
   Provides message handlers
   """
 
-  alias CryptoBunny.Bot
-  alias CryptoBunny.Message
-  alias CryptoBunny.Message.Templates
+  alias CryptoBunny.Messenger
+  alias CryptoBunny.Messenger.{Bot, MessageTemplates}
   alias CryptoBunny.CoinGecko
   alias CryptoBunny.Utils
 
@@ -19,7 +18,7 @@ defmodule CryptoBunny.Message.Handler do
   """
   @spec handle_message(message :: map(), event :: event()) :: :ok | :error
   def handle_message(%{"text" => "hi"}, event) do
-    {:ok, profile} = Message.get_sender_profile(event)
+    {:ok, profile} = Messenger.get_sender_profile(event)
     {:ok, first_name} = Map.fetch(profile, "first_name")
 
     message = "Welcome to Crypto Bunny, #{first_name}"
@@ -44,7 +43,7 @@ defmodule CryptoBunny.Message.Handler do
     case CoinGecko.get_market_chart(coin_id) do
       {:ok, historical_data} ->
         prices = Map.get(historical_data, "prices", [])
-        prices_string = get_prices_string(prices)
+        prices_string = get_price_string(prices)
 
         message =
           if prices == [] do
@@ -106,7 +105,7 @@ defmodule CryptoBunny.Message.Handler do
           button = {:postback, coin_name, payload}
 
           event
-          |> Templates.buttons(title, [button])
+          |> MessageTemplates.buttons(title, [button])
           |> Bot.send_message()
         end)
 
@@ -116,7 +115,7 @@ defmodule CryptoBunny.Message.Handler do
   end
 
   def handle_message(_message, event) do
-    greetings = Message.greeting()
+    greetings = Messenger.greeting()
 
     message = """
     #{greetings}
@@ -156,7 +155,7 @@ defmodule CryptoBunny.Message.Handler do
     case CoinGecko.get_market_chart(coin_id) do
       {:ok, historical_data} ->
         prices = Map.get(historical_data, "prices", [])
-        prices_string = get_prices_string(prices)
+        prices_string = get_price_string(prices)
 
         message =
           if prices == [] do
@@ -183,13 +182,13 @@ defmodule CryptoBunny.Message.Handler do
     ]
 
     template_title = "Would you like to search coins by?"
-    coin_search_method_template = Templates.buttons(event, template_title, buttons)
+    coin_search_method_template = MessageTemplates.buttons(event, template_title, buttons)
 
     # Send postback message
     Bot.send_message(coin_search_method_template)
   end
 
-  defp get_prices_string(prices) do
+  defp get_price_string(prices) do
     Enum.map(prices, fn [date, rate] ->
       date = Utils.Date.to_iso(date)
       rate = Utils.Currency.roundoff(rate)
@@ -201,7 +200,7 @@ defmodule CryptoBunny.Message.Handler do
 
   defp send_message(event, message) do
     event
-    |> Templates.text(message)
+    |> MessageTemplates.text(message)
     |> Bot.send_message()
   end
 end

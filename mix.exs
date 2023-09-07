@@ -4,7 +4,7 @@ defmodule CryptoBunny.MixProject do
   def project do
     [
       app: :crypto_bunny,
-      version: "0.1.0",
+      version: "1.0.0",
       elixir: "~> 1.14",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: Mix.compilers(),
@@ -36,7 +36,7 @@ defmodule CryptoBunny.MixProject do
       {:phoenix, "~> 1.6.14"},
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 1.0"},
-      {:jason, "~> 1.2"},
+      {:jason, "~> 1.4"},
       {:plug_cowboy, "~> 2.5"},
       {:tesla, "~> 1.4"},
       {:hackney, "~> 1.18"}

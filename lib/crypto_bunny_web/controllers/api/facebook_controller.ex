@@ -2,6 +2,7 @@ defmodule CryptoBunnyWeb.API.FacebookController do
   use CryptoBunnyWeb, :controller
 
   alias CryptoBunny
+  alias CryptoBunny.Messenger.Bot
 
   @doc """
   We need to check params sent by message to bot get request.
@@ -15,7 +16,7 @@ defmodule CryptoBunnyWeb.API.FacebookController do
   @spec verify_webhook_token(conn :: Plug.Conn.t(), params :: nil | maybe_improper_list() | map()) ::
           Plug.Conn.t()
   def verify_webhook_token(conn, params) do
-    verified? = CryptoBunny.Bot.verify_webhook(params)
+    verified? = Bot.verify_webhook(params)
 
     if verified? do
       conn

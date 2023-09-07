@@ -11,7 +11,7 @@ defmodule CryptoBunny.Application do
       # Start the Telemetry supervisor
       CryptoBunnyWeb.Telemetry,
       # Start the PubSub system
-      {Phoenix.PubSub, name: CryptoBunny.PubSub},
+      # {Phoenix.PubSub, name: CryptoBunny.PubSub},
       # Start the Endpoint (http/https)
       CryptoBunnyWeb.Endpoint
       # Start a worker by calling: CryptoBunny.Worker.start_link(arg)

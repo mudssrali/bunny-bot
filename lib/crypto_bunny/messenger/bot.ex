@@ -1,4 +1,4 @@
-defmodule CryptoBunny.Bot do
+defmodule CryptoBunny.Messenger.Bot do
   @moduledoc """
   The Bot module
   """
